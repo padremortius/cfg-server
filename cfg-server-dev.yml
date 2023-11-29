@@ -1,0 +1,10 @@
+---      
+git:
+  repoUrl: git@github.com:padremortius/configs-example.git
+  repoBranch: main
+  depth: 1
+  ignoreKnownHosts: true
+  searchPath: dev
+
+logger:
+  level: debug
