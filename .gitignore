@@ -1,0 +1,5 @@
+*.json
+repo/*
+cfg-server
+cfg-server.exe
+.DS_Store
