@@ -5,7 +5,7 @@ import (
 	"cfg-server/internal/svclogger"
 )
 
-func GetDataFromGit(env, appName string) (interface{}, error) {
+func GetDataFromGit(env, appName, profileName string) (interface{}, error) {
 	r := git.GitRepo
 
 	dirExists, err := git.DirExists(r.LocalPath)
@@ -27,7 +27,7 @@ func GetDataFromGit(env, appName string) (interface{}, error) {
 		}
 	}
 
-	data, err := r.GetCfgByAppName(env, appName)
+	data, err := r.GetCfgByAppName(env, appName, profileName)
 	if err != nil {
 		svclogger.Logger.Logger.Error().Msgf("Error get data from git: %v", err)
 		return nil, err

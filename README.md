@@ -25,8 +25,17 @@ For example:
 
 ## How used
 
-`curl http://localhost:8080/dev/downdetector.yaml` - get configuration without using searchPath
-`curl http://localhost:8080/downdetector.json` - get configuration with using searchPath
+`curl http://localhost:8080/<env_name>/<service_name>-<profile_name>.<output_format>` - get configuration with profile and without using searchPath
+`curl http://localhost:8080/<env_name>/<service_name>.<output_format>` - get configuration with profile and without using searchPath
+`curl http://localhost:8080/<service_name>-<profile_name>.<output_format>` - get configuration with profile with current searchPath
+`curl http://localhost:8080/<service_name>.<output_format>` - - get configuration with current searchPath
+
+Supported output format: yaml, yml, json
+
+## Example
+
+`curl http://localhost:8080/dev/downdetector.yaml`
+`curl http://localhost:8080/downdetector.json`
 
 ## Tasks for future
 

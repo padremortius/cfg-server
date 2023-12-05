@@ -103,30 +103,49 @@ func getDataFromFile(fName string) (res map[string]interface{}, err error) {
 	return res, nil
 }
 
-func initFileList(localPath, env, appName string) []string {
+func ItemExists(list []string, item string) bool {
+	for _, v := range list {
+		if v == item {
+			return true
+		}
+	}
+	return false
+}
+
+func initFileList(localPath, env, appName, profileName string) []string {
 	var res []string
 
 	listFName := []string{
 		fmt.Sprint(localPath, "/application.yaml"),
 		fmt.Sprint(localPath, "/application.yml"),
-		fmt.Sprint(localPath, "/", env, "/application.yaml"),
-		fmt.Sprint(localPath, "/", env, "/application.yml"),
+		fmt.Sprint(localPath, "/application", "-", profileName, ".yaml"),
+		fmt.Sprint(localPath, "/application", "-", profileName, ".yml"),
 		fmt.Sprint(localPath, "/", appName, ".yaml"),
 		fmt.Sprint(localPath, "/", appName, ".yml"),
+		fmt.Sprint(localPath, "/", appName, "-", profileName, ".yaml"),
+		fmt.Sprint(localPath, "/", appName, "-", profileName, ".yaml"),
+		fmt.Sprint(localPath, "/", env, "/application.yaml"),
+		fmt.Sprint(localPath, "/", env, "/application.yml"),
+		fmt.Sprint(localPath, "/", env, "/application", "-", profileName, ".yaml"),
+		fmt.Sprint(localPath, "/", env, "/application", "-", profileName, ".yml"),
 		fmt.Sprint(localPath, "/", env, "/", appName, ".yaml"),
 		fmt.Sprint(localPath, "/", env, "/", appName, ".yml"),
+		fmt.Sprint(localPath, "/", env, "/", appName, "-", profileName, ".yaml"),
+		fmt.Sprint(localPath, "/", env, "/", appName, "-", profileName, ".yaml"),
 	}
 
 	for _, fname := range listFName {
-		if FileExists(fname) {
+		if FileExists(fname) && !ItemExists(res, fname) {
 			res = append(res, fname)
 		}
 	}
 
+	svclogger.Logger.Logger.Info().Msgf("listfName: %v", listFName)
+
 	return res
 }
 
-func (r *Repo) GetCfgByAppName(envName, appName string) (interface{}, error) {
+func (r *Repo) GetCfgByAppName(envName, appName, profileName string) (interface{}, error) {
 	var (
 		data, res map[string]interface{}
 		err       error
@@ -138,7 +157,7 @@ func (r *Repo) GetCfgByAppName(envName, appName string) (interface{}, error) {
 		envName = r.SearchPath
 	}
 
-	listFName := initFileList(r.LocalPath, envName, appName)
+	listFName := initFileList(r.LocalPath, envName, appName, profileName)
 
 	for _, fName := range listFName {
 		svclogger.Logger.Logger.Debug().Msgf("Reading file: %s", fName)
@@ -146,7 +165,7 @@ func (r *Repo) GetCfgByAppName(envName, appName string) (interface{}, error) {
 		if err != nil {
 			return res, err
 		}
-		err = mergo.Merge(&res, data)
+		err = mergo.Merge(&res, data, mergo.WithOverride)
 		if err != nil {
 			return res, errors.New(fmt.Sprint("Error merging file: ", err.Error()))
 		}

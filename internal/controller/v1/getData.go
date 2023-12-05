@@ -10,11 +10,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func getData(c *fiber.Ctx) error {
-	app := strings.ToLower(c.Params("app", "test_app"))
-	ext := strings.ToLower(c.Params("ext", "json"))
+func getProfileAndName(aName string) (string, string) {
+	items := strings.Split(aName, "-")
+	count := len(items)
+	if count == 1 {
+		return aName, ""
+	}
+	appName := strings.Join(items[:count-1], "-")
+	return appName, items[count-1]
+}
 
-	data, err := gitdata.GetDataFromGit("", app)
+func getData(c *fiber.Ctx) error {
+	ext := strings.ToLower(c.Params("ext", "json"))
+	app, profile := getProfileAndName(strings.ToLower(c.Params("app", "test_app")))
+
+	data, err := gitdata.GetDataFromGit("", app, profile)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
@@ -32,10 +42,10 @@ func getData(c *fiber.Ctx) error {
 
 func getDataWithEnv(c *fiber.Ctx) error {
 	env := strings.ToLower(c.Params("env", ""))
-	app := strings.ToLower(c.Params("app", "test_app"))
+	app, profile := getProfileAndName(strings.ToLower(c.Params("app", "test_app")))
 	ext := strings.ToLower(c.Params("ext", "json"))
 
-	data, err := gitdata.GetDataFromGit(env, app)
+	data, err := gitdata.GetDataFromGit(env, app, profile)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
