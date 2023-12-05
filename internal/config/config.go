@@ -48,13 +48,13 @@ func NewConfig() error {
 		return errors.New("Read password error: " + err.Error())
 	}
 
-	if err := Cfg.validateConfig(); err != nil {
-		return err
-	}
+	// if err := Cfg.validateConfig(); err != nil {
+	// 	return err
+	// }
 	return nil
 }
 
-func (c *Config) validateConfig() error {
+func (c *Config) ValidateConfig() error {
 	validate := validator.New()
 	if err := validate.Struct(c); err != nil {
 		return err

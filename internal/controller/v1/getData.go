@@ -10,45 +10,43 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func getDataInJSON(c *fiber.Ctx) error {
+func getData(c *fiber.Ctx) error {
 	app := strings.ToLower(c.Params("app", "test_app"))
+	ext := strings.ToLower(c.Params("ext", "json"))
 
 	data, err := gitdata.GetDataFromGit("", app)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
-	return c.Status(http.StatusOK).JSON(data)
-}
 
-func getDataInYaml(c *fiber.Ctx) error {
-	app := strings.ToLower(c.Params("app", "test_app"))
-
-	data, err := gitdata.GetDataFromGit("", app)
-	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
+	var raw []byte
+	if ext == "yaml" || ext == "yml" {
+		raw, _ = common.StructToYamlBytes(data)
+		c.Response().Header.Set("Content-Type", "text/x-yaml")
+	} else {
+		c.Response().Header.Set("Content-Type", "application/json")
+		raw, _ = common.StructToJSONBytes(data)
 	}
-	raw, _ := common.StructToYamlBytes(data)
 	return c.Status(http.StatusOK).Send(raw)
 }
 
-func getDataWithEnvInJSON(c *fiber.Ctx) error {
-	app := strings.ToLower(c.Params("app", "test_app"))
+func getDataWithEnv(c *fiber.Ctx) error {
 	env := strings.ToLower(c.Params("env", ""))
+	app := strings.ToLower(c.Params("app", "test_app"))
+	ext := strings.ToLower(c.Params("ext", "json"))
 
 	data, err := gitdata.GetDataFromGit(env, app)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
-	return c.Status(http.StatusOK).JSON(data)
-}
 
-func getDataWithEnvInYaml(c *fiber.Ctx) error {
-	app := strings.ToLower(c.Params("app", "test_app"))
-	env := strings.ToLower(c.Params("env", ""))
-	data, err := gitdata.GetDataFromGit(env, app)
-	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
+	var raw []byte
+	if ext == "yaml" || ext == "yml" {
+		raw, _ = common.StructToYamlBytes(data)
+		c.Response().Header.Set("Content-Type", "text/x-yaml")
+	} else {
+		c.Response().Header.Set("Content-Type", "application/json")
+		raw, _ = common.StructToJSONBytes(data)
 	}
-	raw, _ := common.StructToYamlBytes(data)
 	return c.Status(http.StatusOK).Send(raw)
 }

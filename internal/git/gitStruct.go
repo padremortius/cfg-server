@@ -10,12 +10,12 @@ import (
 type (
 	GitOpts struct {
 		RepoUrl          string `yaml:"repoUrl" json:"repoUrl" validate:"required"`
-		RepoBranch       string `yaml:"repoBranch" json:"repoBranch" validate:"required" default:"master"`
-		Depth            int    `yaml:"depth" json:"depth" validate:"required" default:"1"`
+		RepoBranch       string `yaml:"repoBranch" json:"repoBranch" validate:"required"`
+		Depth            int    `yaml:"depth" json:"depth" validate:"required"`
 		SearchPath       string `yaml:"searchPath" json:"searchPath" validate:"required"`
-		IgnoreKnownHosts *bool  `yaml:"ignoreKnownHosts" json:"ignoreKnownHosts" validate:"required" default:"true"`
+		IgnoreKnownHosts *bool  `yaml:"ignoreKnownHosts" json:"ignoreKnownHosts" validate:"required"`
 		PrivateKey       string `yaml:"-" json:"-" validate:"required"`
-		Password         string `yaml:"-,omitempty" json:"-,omitempty" default:""`
+		Password         string `yaml:"-,omitempty" json:"-,omitempty"`
 	}
 
 	Repo struct {

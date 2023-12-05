@@ -41,6 +41,20 @@ func Run() {
 		config.Cfg.Git.SearchPath = *searchPath
 	}
 
+	if config.Cfg.Git.IgnoreKnownHosts == nil {
+		config.Cfg.Git.IgnoreKnownHosts = new(bool)
+		*config.Cfg.Git.IgnoreKnownHosts = true
+	}
+
+	if config.Cfg.Git.Depth == 0 {
+		config.Cfg.Git.Depth = 1
+	}
+
+	err := config.Cfg.ValidateConfig()
+	if err != nil {
+		log.Logger.Error().Msgf("Config error: %v", err)
+		os.Exit(-1)
+	}
 	ctx, cancel := context.WithTimeout(ctxmain, config.Cfg.HTTP.Timeouts.Shutdown)
 	defer cancel()
 
