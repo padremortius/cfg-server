@@ -35,7 +35,6 @@ func New(opts GitOpts) *Repo {
 	locRepo = &Repo{
 		RepoUrl:    opts.RepoUrl,
 		RepoBranch: opts.RepoBranch,
-		Depth:      opts.Depth,
 		Auth:       publicKey,
 		SearchPath: opts.SearchPath,
 		LocalPath:  "repo",
@@ -52,8 +51,8 @@ func (r *Repo) CloneRepo() error {
 			r.UpdateTime = time.Now()
 		}()
 		_, err := gogit.PlainClone(r.LocalPath, false, &gogit.CloneOptions{
+			RemoteName:    "origin",
 			URL:           r.RepoUrl,
-			Depth:         r.Depth,
 			Auth:          r.Auth,
 			ReferenceName: plumbing.ReferenceName(fmt.Sprint("refs/heads/", r.RepoBranch)),
 		})
@@ -66,14 +65,28 @@ func (r *Repo) CloneRepo() error {
 
 func (r *Repo) PullRepo() error {
 	currTime := time.Now()
-	if currTime.Sub(r.UpdateTime) > 1*time.Minute {
+	if currTime.Sub(r.UpdateTime) > 15*time.Second {
 		r.RWMutex.Lock()
 		defer func() {
 			r.RWMutex.Unlock()
 			r.UpdateTime = time.Now()
 		}()
-		_, err := gogit.PlainOpen("repo")
+
+		repo, err := gogit.PlainOpen(r.LocalPath)
 		if err != nil {
+			svclogger.Logger.Logger.Error().Msgf("Error opening repo: %v", err)
+			return err
+		}
+
+		w, err := repo.Worktree()
+		if err != nil {
+			svclogger.Logger.Logger.Error().Msgf("Error getting worktree: %v", err)
+			return err
+		}
+
+		err = w.Pull(&gogit.PullOptions{RemoteName: "origin", Auth: r.Auth, Force: true})
+		if (err != nil) && err != gogit.NoErrAlreadyUpToDate {
+			svclogger.Logger.Logger.Error().Msgf("Error pulling repo: %v", err)
 			return err
 		}
 	}
@@ -140,7 +153,7 @@ func initFileList(localPath, env, appName, profileName string) []string {
 		}
 	}
 
-	svclogger.Logger.Logger.Info().Msgf("listfName: %v", listFName)
+	svclogger.Logger.Logger.Debug().Msgf("listfName: %v", res)
 
 	return res
 }
