@@ -153,8 +153,6 @@ func initFileList(localPath, env, appName, profileName string) []string {
 		}
 	}
 
-	svclogger.Logger.Logger.Debug().Msgf("listfName: %v", res)
-
 	return res
 }
 
