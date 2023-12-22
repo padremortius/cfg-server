@@ -55,15 +55,24 @@ func Run() {
 		log.Logger.Error().Msgf("Config error: %v", err)
 		os.Exit(-1)
 	}
+
+	log.Logger.Info().Msgf("Start application. Version: %v", config.Cfg.Version.Version)
+
 	ctx, cancel := context.WithTimeout(ctxmain, config.Cfg.HTTP.Timeouts.Shutdown)
 	defer cancel()
 
 	//init gitRepo
+	log.Logger.Info().Msgf("Start clone repo. Repo url: %v, branch: %v", config.Cfg.Git.RepoUrl, config.Cfg.Git.RepoBranch)
 	git.GitRepo = git.New(config.Cfg.Git)
-	git.InitDir(git.GitRepo.LocalPath)
-	git.GitRepo.CloneRepo()
-
-	log.Logger.Info().Msgf("Start application. Version: %v", config.Cfg.Version.Version)
+	if err := git.InitDir(git.GitRepo.LocalPath); err != nil {
+		log.Logger.Error().Msgf("Error init dir: %v", err)
+		os.Exit(-1)
+	}
+	if err := git.GitRepo.CloneRepo(); err != nil {
+		log.Logger.Error().Msgf("Error clone repo: %v", err)
+		os.Exit(-1)
+	}
+	log.Logger.Info().Msg("End clone repo.")
 
 	log.ChangeLogLevel(config.Cfg.Log.Level)
 
