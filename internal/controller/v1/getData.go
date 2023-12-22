@@ -32,10 +32,14 @@ func getData(c *fiber.Ctx) error {
 	var raw []byte
 	if ext == "yaml" || ext == "yml" {
 		raw, _ = common.StructToYamlBytes(data)
-		c.Response().Header.Set("Content-Type", "text/x-yaml")
+		c.Response().Header.Set("Content-Type", "text/x-yaml; charset=UTF-8")
 	} else {
-		c.Response().Header.Set("Content-Type", "application/json")
-		raw, _ = common.StructToJSONBytes(data)
+		if ext == "json" {
+			c.Response().Header.Set("Content-Type", "application/json")
+			raw, _ = common.StructToJSONBytes(data)
+		} else {
+			return c.Status(http.StatusNotFound).JSON(structs.JSONResult{Code: http.StatusNotFound, Message: "Unknown format file"})
+		}
 	}
 	return c.Status(http.StatusOK).Send(raw)
 }
