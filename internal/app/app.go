@@ -16,7 +16,7 @@ import (
 
 var (
 	repoUrl    = flag.String("repoUrl", "", "Git repo path")
-	repoBranch = flag.String("repoBranch", "master", "Git branch")
+	repoBranch = flag.String("repoBranch", "", "Git branch")
 	searchPath = flag.String("searchPath", "", "Git search path")
 )
 
