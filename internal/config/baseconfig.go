@@ -9,7 +9,7 @@ import (
 type (
 	BaseApp struct {
 		Name        string `env-required:"true" yaml:"name" env:"APP_NAME" json:"name" env-update:"true"`
-		ProfileName string `yaml:"profileName,omitempty" json:"profileName,omitempty"`
+		ProfileName string `env-required:"true" yaml:"profileName,omitempty" env:"PROFILE_NAME" json:"profileName,omitempty" `
 	}
 
 	Version struct {
