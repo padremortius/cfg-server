@@ -9,13 +9,13 @@ require (
 	github.com/carousell/fiber-prometheus-middleware v1.0.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/go-playground/validator/v10 v10.23.0
-	github.com/goccy/go-json v0.10.3
+	github.com/goccy/go-json v0.10.4
 	github.com/gofiber/contrib/fiberzerolog v1.0.2
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/rs/zerolog v1.33.0
 	github.com/valyala/fasthttp v1.58.0
-	golang.org/x/crypto v0.30.0
+	golang.org/x/crypto v0.31.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
