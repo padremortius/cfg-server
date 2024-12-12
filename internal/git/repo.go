@@ -39,13 +39,14 @@ func New(opts GitOpts) *Repo {
 		Depth:      opts.Depth,
 		SearchPath: opts.SearchPath,
 		LocalPath:  opts.LocalPath,
+		SyncTime:   opts.SyncTime,
 	}
 	return locRepo
 }
 
 func (r *Repo) CloneRepo() error {
 	currTime := time.Now()
-	if currTime.Sub(r.UpdateTime) > 1*time.Minute {
+	if currTime.Sub(r.UpdateTime) > r.SyncTime {
 		r.RWMutex.Lock()
 		defer func() {
 			r.RWMutex.Unlock()
@@ -68,7 +69,7 @@ func (r *Repo) CloneRepo() error {
 
 func (r *Repo) PullRepo() error {
 	currTime := time.Now()
-	if currTime.Sub(r.UpdateTime) > 15*time.Second {
+	if currTime.Sub(r.UpdateTime) > r.SyncTime {
 		r.RWMutex.Lock()
 		defer func() {
 			r.RWMutex.Unlock()

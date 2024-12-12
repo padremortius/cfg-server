@@ -9,23 +9,25 @@ import (
 
 type (
 	GitOpts struct {
-		RepoUrl          string `yaml:"repoUrl" json:"repoUrl" validate:"required"`
-		RepoBranch       string `yaml:"repoBranch" json:"repoBranch" validate:"required"`
-		Depth            int    `yaml:"depth" json:"depth" validate:"required"`
-		SearchPath       string `yaml:"searchPath" json:"searchPath" validate:"required"`
-		LocalPath        string `yaml:"localPath" json:"localPath" validate:"required"`
-		IgnoreKnownHosts *bool  `yaml:"ignoreKnownHosts" json:"ignoreKnownHosts" validate:"required"`
-		PrivateKey       string `yaml:"-" json:"-" validate:"required"`
-		Password         string `yaml:"-,omitempty" json:"-,omitempty"`
+		RepoUrl          string        `yaml:"repoUrl" json:"repoUrl" validate:"required"`
+		RepoBranch       string        `yaml:"repoBranch" json:"repoBranch" validate:"required"`
+		Depth            int           `yaml:"depth" json:"depth" validate:"required"`
+		SearchPath       string        `yaml:"searchPath" json:"searchPath" validate:"required"`
+		LocalPath        string        `yaml:"localPath" json:"localPath" validate:"required"`
+		IgnoreKnownHosts *bool         `yaml:"ignoreKnownHosts" json:"ignoreKnownHosts" validate:"required"`
+		PrivateKey       string        `yaml:"-" json:"-" validate:"required"`
+		Password         string        `yaml:"-,omitempty" json:"-,omitempty"`
+		SyncTime         time.Duration `yaml:"syncTime" json:"syncTime" validate:"required"`
 	}
 
 	Repo struct {
-		RepoUrl    string    `yaml:"repoUrl" json:"repoUrl" validate:"required"`
-		LocalPath  string    `yaml:"localPath" json:"localPath" validate:"required"`
-		RepoBranch string    `yaml:"repoBranch" json:"repoBranch" validate:"required"`
-		Depth      int       `yaml:"depth" json:"depth" validate:"required"`
-		SearchPath string    `yaml:"searchPath" json:"searchPath" validate:"required"`
-		UpdateTime time.Time `yaml:"-" json:"-"`
+		RepoUrl    string        `yaml:"repoUrl" json:"repoUrl" validate:"required"`
+		LocalPath  string        `yaml:"localPath" json:"localPath" validate:"required"`
+		RepoBranch string        `yaml:"repoBranch" json:"repoBranch" validate:"required"`
+		Depth      int           `yaml:"depth" json:"depth" validate:"required"`
+		SearchPath string        `yaml:"searchPath" json:"searchPath" validate:"required"`
+		SyncTime   time.Duration `yaml:"syncTime" json:"syncTime" validate:"required"`
+		UpdateTime time.Time     `yaml:"-" json:"-"`
 		RWMutex    sync.RWMutex
 		Auth       *gitssh.PublicKeys `yaml:"-" json:"-"`
 	}

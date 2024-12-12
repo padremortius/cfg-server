@@ -6,6 +6,7 @@ git:
   ignoreKnownHosts: true
   searchPath: dev
   localPath: ./repo
+  syncTime: 30s
 
 logger:
   level: debug
