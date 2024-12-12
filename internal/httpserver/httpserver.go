@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	fiberPrometheus "github.com/ansrivas/fiberprometheus/v2"
+	fiberprom "github.com/carousell/fiber-prometheus-middleware"
 	gojson "github.com/goccy/go-json"
 	"github.com/gofiber/contrib/fiberzerolog"
 	"github.com/gofiber/fiber/v2"
@@ -50,9 +50,8 @@ func New(c context.Context, log *svclogger.Log, opts *HTTP) *Server {
 	}))
 
 	//metrics settings
-	prometheus := fiberPrometheus.New("fiber")
-	prometheus.RegisterAt(app, "/prometheus")
-	app.Use(prometheus.Middleware)
+	prometheus := fiberprom.NewPrometheus("")
+	prometheus.Use(app)
 
 	s := &Server{
 		server: &fasthttp.Server{
