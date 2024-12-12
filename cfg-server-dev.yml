@@ -5,6 +5,7 @@ git:
   depth: 1
   ignoreKnownHosts: true
   searchPath: dev
+  localPath: ./repo
 
 logger:
   level: debug

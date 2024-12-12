@@ -37,7 +37,7 @@ func New(opts GitOpts) *Repo {
 		RepoBranch: opts.RepoBranch,
 		Auth:       publicKey,
 		SearchPath: opts.SearchPath,
-		LocalPath:  "repo",
+		LocalPath:  opts.LocalPath,
 	}
 	return locRepo
 }

@@ -13,6 +13,7 @@ type (
 		RepoBranch       string `yaml:"repoBranch" json:"repoBranch" validate:"required"`
 		Depth            int    `yaml:"depth" json:"depth" validate:"required"`
 		SearchPath       string `yaml:"searchPath" json:"searchPath" validate:"required"`
+		LocalPath        string `yaml:"localPath" json:"localPath" validate:"required"`
 		IgnoreKnownHosts *bool  `yaml:"ignoreKnownHosts" json:"ignoreKnownHosts" validate:"required"`
 		PrivateKey       string `yaml:"-" json:"-" validate:"required"`
 		Password         string `yaml:"-,omitempty" json:"-,omitempty"`
