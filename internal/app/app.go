@@ -47,7 +47,7 @@ func Run() {
 	}
 
 	if config.Cfg.Git.Depth == 0 {
-		config.Cfg.Git.Depth = 1
+		config.Cfg.Git.Depth = 5
 	}
 
 	err := config.Cfg.ValidateConfig()

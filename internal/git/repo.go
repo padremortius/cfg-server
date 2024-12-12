@@ -36,6 +36,7 @@ func New(opts GitOpts) *Repo {
 		RepoUrl:    opts.RepoUrl,
 		RepoBranch: opts.RepoBranch,
 		Auth:       publicKey,
+		Depth:      opts.Depth,
 		SearchPath: opts.SearchPath,
 		LocalPath:  opts.LocalPath,
 	}
@@ -55,6 +56,8 @@ func (r *Repo) CloneRepo() error {
 			URL:           r.RepoUrl,
 			Auth:          r.Auth,
 			ReferenceName: plumbing.ReferenceName(fmt.Sprint("refs/heads/", r.RepoBranch)),
+			Depth:         r.Depth,
+			SingleBranch:  true,
 		})
 		if err != nil {
 			return err
@@ -84,7 +87,13 @@ func (r *Repo) PullRepo() error {
 			return err
 		}
 
-		err = w.Pull(&gogit.PullOptions{RemoteName: "origin", Auth: r.Auth, Force: true})
+		err = w.Pull(&gogit.PullOptions{
+			RemoteName:   "origin",
+			Auth:         r.Auth,
+			Force:        true,
+			Depth:        r.Depth,
+			SingleBranch: true,
+		})
 		if (err != nil) && err != gogit.NoErrAlreadyUpToDate {
 			svclogger.Logger.Logger.Error().Msgf("Error pulling repo: %v", err)
 			return err
