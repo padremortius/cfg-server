@@ -1,0 +1,8 @@
+---
+baseApp:
+  name: cfg-server
+  profileName: "dev"
+http:
+  port: 8080
+logger:
+  level: info
