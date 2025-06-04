@@ -128,12 +128,7 @@ func getDataFromFile(fName string) (res map[string]interface{}, err error) {
 }
 
 func ItemExists(list []string, item string) bool {
-	for _, v := range list {
-		if v == item {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(list, item)
 }
 
 func initFileList(localPath, env, appName, profileName string) []string {
