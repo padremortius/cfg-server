@@ -5,14 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"slices"
 	"time"
 
 	"dario.cat/mergo"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	gitssh "github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	goyaml "github.com/goccy/go-yaml"
 	"golang.org/x/crypto/ssh"
-	"gopkg.in/yaml.v3"
 )
 
 var GitRepo *Repo = nil
@@ -117,7 +118,7 @@ func getDataFromFile(fName string) (res map[string]interface{}, err error) {
 		if rawData, err = os.ReadFile(fName); err != nil {
 			return res, errors.New(fmt.Sprint("Error reading file ", fName, ". Error message: ", err.Error()))
 		}
-		if err = yaml.Unmarshal(rawData, &res); err != nil {
+		if err = goyaml.Unmarshal(rawData, &res); err != nil {
 			svcErr := errors.New(fmt.Sprint("Error unmarshalling file ", fName, ". Error message: ", err.Error()))
 			svclogger.Logger.Logger.Error().Msg(svcErr.Error())
 			return res, svcErr

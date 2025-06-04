@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	gojson "github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
+	goyaml "github.com/goccy/go-yaml"
 )
 
 // StructToJSONBytes is ...
@@ -18,7 +18,7 @@ func StructToJSONBytes(v interface{}) ([]byte, error) {
 }
 
 func StructToYamlBytes(v interface{}) ([]byte, error) {
-	res, err := yaml.Marshal(v)
+	res, err := goyaml.Marshal(v)
 	if err != nil {
 		return nil, err
 	}

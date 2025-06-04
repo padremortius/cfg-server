@@ -10,13 +10,13 @@ require (
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/go-playground/validator/v10 v10.23.0
 	github.com/goccy/go-json v0.10.4
+	github.com/goccy/go-yaml v1.18.0
 	github.com/gofiber/contrib/fiberzerolog v1.0.2
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/rs/zerolog v1.33.0
 	github.com/valyala/fasthttp v1.58.0
 	golang.org/x/crypto v0.31.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -62,5 +62,6 @@ require (
 	golang.org/x/text v0.21.0 // indirect
 	google.golang.org/protobuf v1.35.2 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
