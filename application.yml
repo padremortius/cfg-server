@@ -1,7 +1,7 @@
 ---
 baseApp:
   name: cfg-server
-  profileName: ""
+  profileName: "dev"
 http:
   port: 8080
 logger:
