@@ -1,4 +1,4 @@
----      
+---
 git:
   repoUrl: git@github.com:padremortius/configs-example.git
   repoBranch: main
@@ -7,6 +7,13 @@ git:
   searchPath: dev
   localPath: ./repo
   syncTime: 30s
+
+http:
+  timeouts:
+    read: 30s
+    write: 30s
+    idle: 45s
+    shutdown: 60s
 
 logger:
   level: debug
