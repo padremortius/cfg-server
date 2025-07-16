@@ -1,5 +1,6 @@
 *.json
 repo/*
+secrets/*
 cfg-server
 cfg-server.exe
 .DS_Store

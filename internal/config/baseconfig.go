@@ -10,6 +10,7 @@ type (
 	BaseApp struct {
 		Name        string `env-required:"true" yaml:"name" env:"APP_NAME" json:"name" env-update:"true"`
 		ProfileName string `env-required:"true" yaml:"profileName,omitempty" env:"PROFILE_NAME" json:"profileName,omitempty" `
+		SecPath     string `yaml:"secPath" json:"secPath" env:"SEC_PATH" env-update:"true"`
 	}
 
 	Version struct {
