@@ -9,8 +9,8 @@ import (
 
 // Logger -.
 type Log struct {
-	Logger *zerolog.Logger
-	Level  string `env-required:"true" yaml:"level" json:"level" env:"LOG_LEVEL"`
+	Logger *zerolog.Logger `yaml:"-" json:"-"`
+	Level  string          `env-required:"true" yaml:"level" json:"level" env:"LOG_LEVEL"`
 }
 
 var Logger *Log = nil
