@@ -55,12 +55,22 @@ func getDataWithEnv(c *fiber.Ctx) error {
 	}
 
 	var raw []byte
-	if ext == "yaml" || ext == "yml" {
-		raw, _ = common.StructToYamlBytes(data)
-		c.Response().Header.Set("Content-Type", "text/x-yaml")
-	} else {
-		c.Response().Header.Set("Content-Type", "application/json")
-		raw, _ = common.StructToJSONBytes(data)
+	switch ext {
+	case "yaml", "yml":
+		{
+			raw, _ = common.StructToYamlBytes(data)
+			c.Response().Header.Set("Content-Type", "text/x-yaml")
+		}
+	case "json":
+		{
+			c.Response().Header.Set("Content-Type", "application/json")
+			raw, _ = common.StructToJSONBytes(data)
+		}
+	default:
+		{
+			c.Response().Header.Set("Content-Type", "text/plain")
+			raw, _ = common.StructToTomlBytes(data)
+		}
 	}
 	return c.Status(http.StatusOK).Send(raw)
 }

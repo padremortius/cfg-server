@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/BurntSushi/toml"
 	gojson "github.com/goccy/go-json"
 	goyaml "github.com/goccy/go-yaml"
 )
@@ -20,6 +21,14 @@ func StructToJSONBytes(v interface{}) ([]byte, error) {
 
 func StructToYamlBytes(v interface{}) ([]byte, error) {
 	res, err := goyaml.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func StructToTomlBytes(v interface{}) ([]byte, error) {
+	res, err := toml.Marshal(v)
 	if err != nil {
 		return nil, err
 	}
