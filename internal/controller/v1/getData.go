@@ -20,6 +20,27 @@ func getProfileAndName(aName string) (string, string) {
 	return appName, items[count-1]
 }
 
+func writeOutput(data interface{}, ext string, c *fiber.Ctx) error {
+	var raw []byte
+	if ext == "yaml" || ext == "yml" {
+		raw, _ = common.StructToYamlBytes(data)
+		c.Response().Header.Set("Content-Type", "text/x-yaml; charset=UTF-8")
+		return c.Status(http.StatusOK).Send(raw)
+	}
+	if ext == "json" {
+		c.Response().Header.Set("Content-Type", "application/json")
+		raw, _ = common.StructToJSONBytes(data)
+		return c.Status(http.StatusOK).Send(raw)
+	}
+	if ext == "toml" {
+		c.Response().Header.Set("Content-Type", "text/plain; charset=UTF-8")
+		raw, _ = common.StructToTomlBytes(data)
+		return c.Status(http.StatusOK).Send(raw)
+	}
+	c.Response().Header.Set("Content-Type", "application/json")
+	return c.Status(http.StatusNotFound).JSON(structs.JSONResult{Code: http.StatusNotFound, Message: "Unknown format file"})
+}
+
 func getData(c *fiber.Ctx) error {
 	ext := strings.ToLower(c.Params("ext", "json"))
 	app, profile := getProfileAndName(strings.ToLower(c.Params("app", "test_app")))
@@ -28,20 +49,7 @@ func getData(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
-
-	var raw []byte
-	if ext == "yaml" || ext == "yml" {
-		raw, _ = common.StructToYamlBytes(data)
-		c.Response().Header.Set("Content-Type", "text/x-yaml; charset=UTF-8")
-	} else {
-		if ext == "json" {
-			c.Response().Header.Set("Content-Type", "application/json")
-			raw, _ = common.StructToJSONBytes(data)
-		} else {
-			return c.Status(http.StatusNotFound).JSON(structs.JSONResult{Code: http.StatusNotFound, Message: "Unknown format file"})
-		}
-	}
-	return c.Status(http.StatusOK).Send(raw)
+	return writeOutput(data, ext, c)
 }
 
 func getDataWithEnv(c *fiber.Ctx) error {
@@ -54,23 +62,5 @@ func getDataWithEnv(c *fiber.Ctx) error {
 		return c.Status(http.StatusInternalServerError).JSON(structs.JSONResult{Code: http.StatusInternalServerError, Message: err.Error()})
 	}
 
-	var raw []byte
-	switch ext {
-	case "yaml", "yml":
-		{
-			raw, _ = common.StructToYamlBytes(data)
-			c.Response().Header.Set("Content-Type", "text/x-yaml")
-		}
-	case "json":
-		{
-			c.Response().Header.Set("Content-Type", "application/json")
-			raw, _ = common.StructToJSONBytes(data)
-		}
-	default:
-		{
-			c.Response().Header.Set("Content-Type", "text/plain")
-			raw, _ = common.StructToTomlBytes(data)
-		}
-	}
-	return c.Status(http.StatusOK).Send(raw)
+	return writeOutput(data, ext, c)
 }
