@@ -7,25 +7,33 @@ import (
 	fiber "github.com/gofiber/fiber/v2"
 )
 
-func getHealth(c *fiber.Ctx) error {
+type (
+	BaseRoutes struct {
+		cfg config.Config
+	}
+)
+
+func (b *BaseRoutes) getHealth(c *fiber.Ctx) error {
 	return c.JSON(structs.Health{Status: "up"})
 }
 
-func getInfo(c *fiber.Ctx) error {
-	return c.JSON(config.Cfg.Version)
+func (b *BaseRoutes) getInfo(c *fiber.Ctx) error {
+	return c.JSON(b.cfg.Version)
 }
 
-func getEnv(c *fiber.Ctx) error {
-	return c.JSON(config.Cfg)
+func (b *BaseRoutes) getEnv(c *fiber.Ctx) error {
+	return c.JSON(b.cfg)
 }
 
-func InitBaseRouter(app *fiber.App) {
+func InitBaseRouter(app *fiber.App, aConfig config.Config) {
+	bRoutes := BaseRoutes{cfg: aConfig}
+
 	// K8s probe
-	app.Get("/health", getHealth)
+	app.Get("/health", bRoutes.getHealth)
 
 	//info about service
-	app.Get("/info", getInfo)
+	app.Get("/info", bRoutes.getInfo)
 
 	//env
-	app.Get("/env", getEnv)
+	app.Get("/env", bRoutes.getEnv)
 }

@@ -20,50 +20,48 @@ var (
 	searchPath = flag.String("searchPath", "", "Git search path")
 )
 
-func Run() {
+func Run(ver config.Version) {
 	flag.Parse()
 	ctxmain := context.Background()
 
 	log := svclogger.New("")
 
-	if err := config.NewConfig(); err != nil {
-		log.Logger.Error().Msgf("Config error: %v", err)
-		os.Exit(-1)
-	}
-	if *repoUrl != "" {
-		config.Cfg.Git.RepoUrl = *repoUrl
-	}
-
-	if *repoBranch != "" {
-		config.Cfg.Git.RepoBranch = *repoBranch
-	}
-	if *searchPath != "" {
-		config.Cfg.Git.SearchPath = *searchPath
-	}
-
-	if config.Cfg.Git.IgnoreKnownHosts == nil {
-		config.Cfg.Git.IgnoreKnownHosts = new(bool)
-		*config.Cfg.Git.IgnoreKnownHosts = true
-	}
-
-	if config.Cfg.Git.Depth == 0 {
-		config.Cfg.Git.Depth = 5
-	}
-
-	err := config.Cfg.ValidateConfig()
+	appCfg, err := config.NewConfig()
 	if err != nil {
 		log.Logger.Error().Msgf("Config error: %v", err)
 		os.Exit(-1)
 	}
 
-	log.Logger.Info().Msgf("Start application. Version: %v", config.Cfg.Version.Version)
+	appCfg.Version = ver
 
-	ctx, cancel := context.WithTimeout(ctxmain, config.Cfg.HTTP.Timeouts.Shutdown)
+	if *repoUrl != "" {
+		appCfg.Git.RepoUrl = *repoUrl
+	}
+
+	if *repoBranch != "" {
+		appCfg.Git.RepoBranch = *repoBranch
+	}
+	if *searchPath != "" {
+		appCfg.Git.SearchPath = *searchPath
+	}
+
+	if appCfg.Git.IgnoreKnownHosts == nil {
+		appCfg.Git.IgnoreKnownHosts = new(bool)
+		*appCfg.Git.IgnoreKnownHosts = true
+	}
+
+	if appCfg.Git.Depth == 0 {
+		appCfg.Git.Depth = 5
+	}
+
+	log.Logger.Info().Msgf("Start application. Version: %v", appCfg.Version.Version)
+
+	ctx, cancel := context.WithTimeout(ctxmain, appCfg.HTTP.Timeouts.Shutdown)
 	defer cancel()
 
 	//init gitRepo
-	log.Logger.Info().Msgf("Start clone repo. Repo url: %v, branch: %v", config.Cfg.Git.RepoUrl, config.Cfg.Git.RepoBranch)
-	git.GitRepo = git.New(config.Cfg.Git)
+	log.Logger.Info().Msgf("Start clone repo. Repo url: %v, branch: %v", appCfg.Git.RepoUrl, appCfg.Git.RepoBranch)
+	git.GitRepo = git.New(appCfg.Git)
 	if err := git.InitDir(git.GitRepo.LocalPath); err != nil {
 		log.Logger.Error().Msgf("Error init dir: %v", err)
 		os.Exit(-1)
@@ -74,13 +72,13 @@ func Run() {
 	}
 	log.Logger.Info().Msg("End clone repo.")
 
-	log.ChangeLogLevel(config.Cfg.Log.Level)
+	log.ChangeLogLevel(appCfg.Log.Level)
 
 	// HTTP Server
-	log.Logger.Info().Msgf("Start web-server on port %v", config.Cfg.HTTP.Port)
+	log.Logger.Info().Msgf("Start web-server on port %v", appCfg.HTTP.Port)
 
-	httpServer := httpserver.New(ctx, log, &config.Cfg.HTTP)
-	baserouting.InitBaseRouter(httpServer.Handler)
+	httpServer := httpserver.New(ctx, log, &appCfg.HTTP)
+	baserouting.InitBaseRouter(httpServer.Handler, *appCfg)
 	v1.InitAppRouter(httpServer.Handler)
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
@@ -102,7 +100,7 @@ func Run() {
 	}
 
 	// Shutdown
-	if err := httpServer.Shutdown(config.Cfg.HTTP.Timeouts.Shutdown); err != nil {
+	if err := httpServer.Shutdown(appCfg.HTTP.Timeouts.Shutdown); err != nil {
 		log.Logger.Error().Msgf("app - Run - httpServer.Shutdown: %v", err.Error())
 	}
 }

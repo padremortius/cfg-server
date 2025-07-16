@@ -6,6 +6,7 @@ import (
 	"cfg-server/internal/svclogger"
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/ilyakaznacheev/cleanenv"
@@ -30,31 +31,43 @@ var (
 //
 // It returns an error if there is an issue reading the environment variables
 // or the configuration file.
-func NewConfig() error {
-	err := cleanenv.ReadEnv(&Cfg)
-	if err != nil {
-		return err
+func NewConfig() (*Config, error) {
+	var cfg Config
+
+	if err := cfg.ReadBaseConfig(); err != nil {
+		return &Config{}, errors.New("NewConfig: " + err.Error())
 	}
 
-	appConfigName := fmt.Sprint(Cfg.BaseApp.Name, "-", Cfg.BaseApp.ProfileName, ".yml")
+	err := cleanenv.ReadEnv(&cfg)
+	if err != nil {
+		return &Config{}, err
+	}
 
-	if Cfg.BaseApp.ProfileName == "dev" {
-		if err := cleanenv.ReadConfig(appConfigName, &Cfg); err != nil {
-			return err
+	if _, err := os.Stat(".env"); err == nil {
+		if err := cleanenv.ReadConfig(".env", &cfg); err != nil {
+			return &Config{}, err
 		}
 	}
 
-	if err = ReadPwd(); err != nil {
-		return errors.New("Read password error: " + err.Error())
+	appConfigName := fmt.Sprint(cfg.BaseApp.Name, "-", cfg.BaseApp.ProfileName, ".yml")
+
+	if cfg.BaseApp.ProfileName == "dev" {
+		if err := cleanenv.ReadConfig(appConfigName, &cfg); err != nil {
+			return &Config{}, errors.New("Read config error: " + err.Error())
+		}
 	}
 
-	// if err := Cfg.validateConfig(); err != nil {
-	// 	return err
-	// }
-	return nil
+	if err = cfg.ReadPwd(); err != nil {
+		return &Config{}, errors.New("Read password error: " + err.Error())
+	}
+
+	if err := cfg.validateConfig(); err != nil {
+		return &Config{}, errors.New("Validation error: " + err.Error())
+	}
+	return &cfg, nil
 }
 
-func (c *Config) ValidateConfig() error {
+func (c *Config) validateConfig() error {
 	validate := validator.New()
 	if err := validate.Struct(c); err != nil {
 		return err

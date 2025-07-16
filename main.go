@@ -13,6 +13,7 @@ var (
 )
 
 func main() {
-	config.Cfg.Version = *config.InitVersion(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash)
-	app.Run()
+
+	ver := *config.InitVersion(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash)
+	app.Run(ver)
 }
