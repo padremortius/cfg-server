@@ -16,7 +16,6 @@ require (
 	github.com/gofiber/fiber/v2 v2.52.9
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/rs/zerolog v1.34.0
-	github.com/valyala/fasthttp v1.66.0
 	golang.org/x/crypto v0.42.0
 )
 
@@ -56,6 +55,7 @@ require (
 	github.com/sergi/go-diff v1.4.0 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.66.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	golang.org/x/net v0.44.0 // indirect

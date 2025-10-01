@@ -11,7 +11,6 @@ import (
 	"github.com/gofiber/contrib/fiberzerolog"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/valyala/fasthttp"
 )
 
 type HTTP struct {
@@ -26,7 +25,6 @@ type HTTP struct {
 
 type Server struct {
 	ctx     context.Context
-	server  *fasthttp.Server
 	Handler *fiber.App
 	notify  chan error
 }
@@ -37,6 +35,9 @@ func New(c context.Context, log *svclogger.Log, opts *HTTP) *Server {
 		JSONEncoder:           gojson.Marshal,
 		JSONDecoder:           gojson.Unmarshal,
 		DisableStartupMessage: true,
+		ReadTimeout:           opts.Timeouts.Read,
+		WriteTimeout:          opts.Timeouts.Write,
+		IdleTimeout:           opts.Timeouts.Idle,
 	})
 
 	app.Use(recover.New())
@@ -54,12 +55,6 @@ func New(c context.Context, log *svclogger.Log, opts *HTTP) *Server {
 	prometheus.Use(app)
 
 	s := &Server{
-		server: &fasthttp.Server{
-			Handler:      app.Handler(),
-			IdleTimeout:  opts.Timeouts.Idle,
-			ReadTimeout:  opts.Timeouts.Read,
-			WriteTimeout: opts.Timeouts.Write,
-		},
 		notify:  make(chan error, 1),
 		Handler: app,
 		ctx:     c,
@@ -87,5 +82,5 @@ func (s *Server) Shutdown(shutdownTimeout time.Duration) error {
 	ctx, cancel := context.WithTimeout(s.ctx, shutdownTimeout)
 	defer cancel()
 
-	return s.server.ShutdownWithContext(ctx)
+	return s.Handler.ShutdownWithContext(ctx)
 }
