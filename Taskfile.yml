@@ -28,6 +28,10 @@ tasks:
     cmds:
       - go build -ldflags="-X main.aGitHash={{.GIT_COMMIT}} -X main.aGitBranch={{.GIT_BRANCH}} -X main.aBuildNumber={{.BUILDNUM}} -X main.aBuildTimeStamp={{.BUILD_TIMESTAMP}}" .
 
+  count-cloc:
+    cmds:
+      - ~/go/bin/gocloc --not-match-d="replaced|secrets|data|spec" --not-match=Taskfile.yml .
+
   lint:
     cmds:
       - golangci-lint run ./...
