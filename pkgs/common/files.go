@@ -55,10 +55,10 @@ func GetDataFromFile(fName string) (res map[string]any, err error) {
 	var rawData []byte
 	if FileExists(fName) {
 		if rawData, err = ReadFile(fName); err != nil {
-			return res, fmt.Errorf("Error reading file %v. Error message: %v", fName, err)
+			return res, fmt.Errorf("error reading file %v with error message: %v", fName, err)
 		}
 		if err = goyaml.Unmarshal(rawData, &res); err != nil {
-			svcErr := fmt.Errorf("Error unmarshalling file %v. Error message: %v", fName, err)
+			svcErr := fmt.Errorf("error unmarshalling file %v with error message: %v", fName, err)
 			return res, svcErr
 		}
 	}

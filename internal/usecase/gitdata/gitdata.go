@@ -12,23 +12,25 @@ func GetDataFromGit(env, appName, profileName string) (any, error) {
 
 	dirExists, err := common.DirExists(r.LocalPath)
 	if err != nil {
-		return nil, fmt.Errorf("Error check repo dir: %v", err)
+		return nil, fmt.Errorf("error check repo dir: %v", err)
 	}
 
 	if !dirExists {
-		common.InitDir(r.LocalPath)
+		if err = common.InitDir(r.LocalPath); err != nil {
+			return nil, fmt.Errorf("error init dir %v with error: %v", r.LocalPath, err)
+		}
 		if err = r.CloneRepo(); err != nil {
-			return nil, fmt.Errorf("Error clone repo: %v", err)
+			return nil, fmt.Errorf("error clone repo: %v", err)
 		}
 	} else {
 		if err = r.PullRepo(); err != nil {
-			return nil, fmt.Errorf("Error pull repo: %v", err)
+			return nil, fmt.Errorf("error pull repo: %v", err)
 		}
 	}
 
 	data, err := r.GetCfgByAppName(env, appName, profileName)
 	if err != nil {
-		return nil, fmt.Errorf("Error get data from git: %v", err)
+		return nil, fmt.Errorf("error get data from git: %v", err)
 	}
 	return data, nil
 }

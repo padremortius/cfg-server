@@ -22,7 +22,7 @@ func FillPwdMap(path string) (map[string]string, error) {
 	for _, entry := range entries {
 		buff, err := common.ReadFile(filepath.Join(path, entry.Name()))
 		if err != nil {
-			return pwd, fmt.Errorf("Error read file: %v. Error: %v", entry.Name(), err.Error())
+			return pwd, fmt.Errorf("error read file %v with error: %v", entry.Name(), err.Error())
 		}
 		pwd[entry.Name()] = string(buff)
 	}

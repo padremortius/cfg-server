@@ -39,7 +39,11 @@ func GetFileByURL(URL string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if closeErr := resp.Body.Close(); closeErr != nil && err == nil {
+			err = closeErr // Propagate the close error if no other error occurred
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

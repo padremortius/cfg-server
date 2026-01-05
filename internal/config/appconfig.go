@@ -19,10 +19,10 @@ type (
 	Config struct {
 		App                `yaml:"app" json:"app" validate:"required"`
 		baseconfig.BaseApp `yaml:"baseApp" json:"baseApp" validate:"required"`
-		Git                git.GitOpts     `yaml:"git" json:"git" validate:"required"`
-		HTTP               httpserver.HTTP `yaml:"http" json:"http" validate:"required"`
-		Log                svclogger.Log   `yaml:"logger" json:"logger" validate:"required"`
-		baseconfig.Version `json:"version"`
+		Git                git.GitOpts        `yaml:"git" json:"git" validate:"required"`
+		HTTP               httpserver.HTTP    `yaml:"http" json:"http" validate:"required"`
+		Log                svclogger.Log      `yaml:"logger" json:"logger" validate:"required"`
+		Version            baseconfig.Version `json:"version"`
 	}
 )
 
@@ -70,20 +70,20 @@ func NewConfig(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash string) (*Con
 		}
 	}
 
-	appConfigName := fmt.Sprint(cfg.BaseApp.Name, "-", cfg.BaseApp.ProfileName, ".yml")
+	appConfigName := fmt.Sprint(cfg.Name, "-", cfg.ProfileName, ".yml")
 
-	if cfg.BaseApp.ProfileName == "dev" {
+	if cfg.ProfileName == "dev" {
 		if err := cleanenv.ReadConfig(appConfigName, &cfg); err != nil {
-			return &Config{}, fmt.Errorf("Read config error: %v", err)
+			return &Config{}, fmt.Errorf("read config error: %v", err)
 		}
 	}
 
 	if err = cfg.ReadPwd(); err != nil {
-		return &Config{}, fmt.Errorf("Read password error: %v", err)
+		return &Config{}, fmt.Errorf("read password error: %v", err)
 	}
 
 	if err := cfg.validateConfig(); err != nil {
-		return &Config{}, fmt.Errorf("Validation error: %v", err)
+		return &Config{}, fmt.Errorf("validation error: %v", err)
 	}
 	return &cfg, nil
 }

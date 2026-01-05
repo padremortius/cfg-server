@@ -24,7 +24,7 @@ func New(opts GitOpts) (*Repo, error) {
 	)
 
 	if publicKey, keyError = gitssh.NewPublicKeys("git", []byte(opts.PrivateKey), opts.Password); keyError != nil {
-		return locRepo, fmt.Errorf("Error parsing ssh private key: %v", keyError)
+		return locRepo, fmt.Errorf("error parsing ssh private key: %v", keyError)
 	}
 	if *opts.IgnoreKnownHosts {
 		publicKey.HostKeyCallback = ssh.InsecureIgnoreHostKey()
@@ -76,12 +76,12 @@ func (r *Repo) PullRepo() error {
 
 		repo, err := gogit.PlainOpen(r.LocalPath)
 		if err != nil {
-			return fmt.Errorf("Error opening repo: %v", err)
+			return fmt.Errorf("error opening repo: %v", err)
 		}
 
 		w, err := repo.Worktree()
 		if err != nil {
-			return fmt.Errorf("Error getting worktree: %v", err)
+			return fmt.Errorf("error getting worktree: %v", err)
 		}
 
 		err = w.Pull(&gogit.PullOptions{
@@ -92,7 +92,7 @@ func (r *Repo) PullRepo() error {
 			SingleBranch: true,
 		})
 		if (err != nil) && err != gogit.NoErrAlreadyUpToDate {
-			return fmt.Errorf("Error pulling repo: %v", err)
+			return fmt.Errorf("error pulling repo: %v", err)
 		}
 	}
 	return nil
@@ -154,7 +154,7 @@ func (r *Repo) GetCfgByAppName(envName, appName, profileName string) (any, error
 		}
 		err = mergo.Merge(&res, data, mergo.WithOverride)
 		if err != nil {
-			return res, fmt.Errorf("Error merging file: %v", err)
+			return res, fmt.Errorf("error merging file: %v", err)
 		}
 	}
 
