@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
@@ -55,7 +54,7 @@ func NewConfig(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash string) (*Con
 	var cfg Config
 
 	if err := cfg.ReadBaseConfig(); err != nil {
-		return &Config{}, errors.New("NewConfig: " + err.Error())
+		return &Config{}, fmt.Errorf("NewConfig: %v", err)
 	}
 
 	cfg.Version = *baseconfig.InitVersion(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash)
@@ -75,16 +74,16 @@ func NewConfig(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash string) (*Con
 
 	if cfg.BaseApp.ProfileName == "dev" {
 		if err := cleanenv.ReadConfig(appConfigName, &cfg); err != nil {
-			return &Config{}, errors.New("Read config error: " + err.Error())
+			return &Config{}, fmt.Errorf("Read config error: %v", err)
 		}
 	}
 
 	if err = cfg.ReadPwd(); err != nil {
-		return &Config{}, errors.New("Read password error: " + err.Error())
+		return &Config{}, fmt.Errorf("Read password error: %v", err)
 	}
 
 	if err := cfg.validateConfig(); err != nil {
-		return &Config{}, errors.New("Validation error: " + err.Error())
+		return &Config{}, fmt.Errorf("Validation error: %v", err)
 	}
 	return &cfg, nil
 }

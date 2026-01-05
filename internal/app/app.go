@@ -60,7 +60,11 @@ func Run(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash string) {
 
 	//init gitRepo
 	log.Logger.Info().Msgf("Start clone repo. Repo url: %v, branch: %v", appCfg.Git.RepoUrl, appCfg.Git.RepoBranch)
-	git.GitRepo = git.New(appCfg.Git)
+	git.GitRepo, err = git.New(appCfg.Git)
+	if err != nil {
+		log.Logger.Error().Msgf("Error init git instance: %v", err)
+		os.Exit(-1)
+	}
 	if err := common.InitDir(git.GitRepo.LocalPath); err != nil {
 		log.Logger.Error().Msgf("Error init dir: %v", err)
 		os.Exit(-1)

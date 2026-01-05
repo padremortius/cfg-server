@@ -1,13 +1,11 @@
 package git
 
 import (
-	"errors"
 	"fmt"
 	"slices"
 	"time"
 
 	"github.com/padremortius/cfg-server/pkgs/common"
-	"github.com/padremortius/cfg-server/pkgs/svclogger"
 
 	"dario.cat/mergo"
 	gogit "github.com/go-git/go-git/v5"
@@ -18,7 +16,7 @@ import (
 
 var GitRepo *Repo = nil
 
-func New(opts GitOpts) *Repo {
+func New(opts GitOpts) (*Repo, error) {
 	var (
 		publicKey *gitssh.PublicKeys
 		keyError  error
@@ -26,8 +24,7 @@ func New(opts GitOpts) *Repo {
 	)
 
 	if publicKey, keyError = gitssh.NewPublicKeys("git", []byte(opts.PrivateKey), opts.Password); keyError != nil {
-		svclogger.Logger.Logger.Error().Msgf("Error parsing ssh private key: %v", keyError)
-		return locRepo
+		return locRepo, fmt.Errorf("Error parsing ssh private key: %v", keyError)
 	}
 	if *opts.IgnoreKnownHosts {
 		publicKey.HostKeyCallback = ssh.InsecureIgnoreHostKey()
@@ -42,7 +39,7 @@ func New(opts GitOpts) *Repo {
 		LocalPath:  opts.LocalPath,
 		SyncTime:   opts.SyncTime,
 	}
-	return locRepo
+	return locRepo, nil
 }
 
 func (r *Repo) CloneRepo() error {
@@ -79,14 +76,12 @@ func (r *Repo) PullRepo() error {
 
 		repo, err := gogit.PlainOpen(r.LocalPath)
 		if err != nil {
-			svclogger.Logger.Logger.Error().Msgf("Error opening repo: %v", err)
-			return err
+			return fmt.Errorf("Error opening repo: %v", err)
 		}
 
 		w, err := repo.Worktree()
 		if err != nil {
-			svclogger.Logger.Logger.Error().Msgf("Error getting worktree: %v", err)
-			return err
+			return fmt.Errorf("Error getting worktree: %v", err)
 		}
 
 		err = w.Pull(&gogit.PullOptions{
@@ -97,8 +92,7 @@ func (r *Repo) PullRepo() error {
 			SingleBranch: true,
 		})
 		if (err != nil) && err != gogit.NoErrAlreadyUpToDate {
-			svclogger.Logger.Logger.Error().Msgf("Error pulling repo: %v", err)
-			return err
+			return fmt.Errorf("Error pulling repo: %v", err)
 		}
 	}
 	return nil
@@ -154,14 +148,13 @@ func (r *Repo) GetCfgByAppName(envName, appName, profileName string) (interface{
 	listFName := initFileList(r.LocalPath, envName, appName, profileName)
 
 	for _, fName := range listFName {
-		svclogger.Logger.Logger.Debug().Msgf("Reading file: %s", fName)
 		data, err = common.GetDataFromFile(fName)
 		if err != nil {
 			return res, err
 		}
 		err = mergo.Merge(&res, data, mergo.WithOverride)
 		if err != nil {
-			return res, errors.New(fmt.Sprint("Error merging file: ", err.Error()))
+			return res, fmt.Errorf("Error merging file: %v", err)
 		}
 	}
 
