@@ -3,7 +3,6 @@ package common
 import (
 	"io"
 	"net/http"
-	"os"
 
 	"github.com/BurntSushi/toml"
 	gojson "github.com/goccy/go-json"
@@ -60,8 +59,4 @@ func GetPubKey(URL string) (string, error) {
 		return "", err
 	}
 	return answer["value"], nil
-}
-
-func ReadFile(aFileName string) ([]byte, error) {
-	return os.ReadFile(aFileName)
 }

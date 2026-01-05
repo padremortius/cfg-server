@@ -4,18 +4,19 @@ import (
 	"errors"
 
 	"github.com/padremortius/cfg-server/internal/git"
+	"github.com/padremortius/cfg-server/pkgs/common"
 )
 
 func GetDataFromGit(env, appName, profileName string) (interface{}, error) {
 	r := git.GitRepo
 
-	dirExists, err := git.DirExists(r.LocalPath)
+	dirExists, err := common.DirExists(r.LocalPath)
 	if err != nil {
 		return nil, errors.New("Error check repo dir: " + err.Error())
 	}
 
 	if !dirExists {
-		git.InitDir(r.LocalPath)
+		common.InitDir(r.LocalPath)
 		if err = r.CloneRepo(); err != nil {
 			return nil, errors.New("Error clone repo: " + err.Error())
 		}

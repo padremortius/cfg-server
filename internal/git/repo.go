@@ -3,17 +3,16 @@ package git
 import (
 	"errors"
 	"fmt"
-	"os"
 	"slices"
 	"time"
 
+	"github.com/padremortius/cfg-server/pkgs/common"
 	"github.com/padremortius/cfg-server/pkgs/svclogger"
 
 	"dario.cat/mergo"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	gitssh "github.com/go-git/go-git/v5/plumbing/transport/ssh"
-	goyaml "github.com/goccy/go-yaml"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -105,29 +104,6 @@ func (r *Repo) PullRepo() error {
 	return nil
 }
 
-func FileExists(fName string) bool {
-	res := true
-	if _, err := os.Stat(fName); errors.Is(err, os.ErrNotExist) {
-		res = false
-	}
-	return res
-}
-
-func getDataFromFile(fName string) (res map[string]interface{}, err error) {
-	var rawData []byte
-	if FileExists(fName) {
-		if rawData, err = os.ReadFile(fName); err != nil {
-			return res, errors.New(fmt.Sprint("Error reading file ", fName, ". Error message: ", err.Error()))
-		}
-		if err = goyaml.Unmarshal(rawData, &res); err != nil {
-			svcErr := errors.New(fmt.Sprint("Error unmarshalling file ", fName, ". Error message: ", err.Error()))
-			svclogger.Logger.Logger.Error().Msg(svcErr.Error())
-			return res, svcErr
-		}
-	}
-	return res, nil
-}
-
 func ItemExists(list []string, item string) bool {
 	return slices.Contains(list, item)
 }
@@ -155,7 +131,7 @@ func initFileList(localPath, env, appName, profileName string) []string {
 	}
 
 	for _, fname := range listFName {
-		if FileExists(fname) && !ItemExists(res, fname) {
+		if common.FileExists(fname) && !ItemExists(res, fname) {
 			res = append(res, fname)
 		}
 	}
@@ -179,7 +155,7 @@ func (r *Repo) GetCfgByAppName(envName, appName, profileName string) (interface{
 
 	for _, fName := range listFName {
 		svclogger.Logger.Logger.Debug().Msgf("Reading file: %s", fName)
-		data, err = getDataFromFile(fName)
+		data, err = common.GetDataFromFile(fName)
 		if err != nil {
 			return res, err
 		}

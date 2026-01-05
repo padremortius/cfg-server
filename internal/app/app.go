@@ -10,6 +10,7 @@ import (
 	"github.com/padremortius/cfg-server/internal/config"
 	v1 "github.com/padremortius/cfg-server/internal/controller/v1"
 	"github.com/padremortius/cfg-server/internal/git"
+	"github.com/padremortius/cfg-server/pkgs/common"
 	"github.com/padremortius/cfg-server/pkgs/httpserver"
 	"github.com/padremortius/cfg-server/pkgs/svclogger"
 )
@@ -60,7 +61,7 @@ func Run(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash string) {
 	//init gitRepo
 	log.Logger.Info().Msgf("Start clone repo. Repo url: %v, branch: %v", appCfg.Git.RepoUrl, appCfg.Git.RepoBranch)
 	git.GitRepo = git.New(appCfg.Git)
-	if err := git.InitDir(git.GitRepo.LocalPath); err != nil {
+	if err := common.InitDir(git.GitRepo.LocalPath); err != nil {
 		log.Logger.Error().Msgf("Error init dir: %v", err)
 		os.Exit(-1)
 	}
