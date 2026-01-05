@@ -10,7 +10,7 @@ import (
 )
 
 // StructToJSONBytes is ...
-func StructToJSONBytes(v interface{}) ([]byte, error) {
+func StructToJSONBytes(v any) ([]byte, error) {
 	res, err := gojson.Marshal(v)
 	if err != nil {
 		return nil, err
@@ -18,7 +18,7 @@ func StructToJSONBytes(v interface{}) ([]byte, error) {
 	return res, nil
 }
 
-func StructToYamlBytes(v interface{}) ([]byte, error) {
+func StructToYamlBytes(v any) ([]byte, error) {
 	res, err := goyaml.Marshal(v)
 	if err != nil {
 		return nil, err
@@ -26,7 +26,7 @@ func StructToYamlBytes(v interface{}) ([]byte, error) {
 	return res, nil
 }
 
-func StructToTomlBytes(v interface{}) ([]byte, error) {
+func StructToTomlBytes(v any) ([]byte, error) {
 	res, err := toml.Marshal(v)
 	if err != nil {
 		return nil, err

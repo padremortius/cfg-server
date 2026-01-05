@@ -7,7 +7,7 @@ import (
 	"github.com/padremortius/cfg-server/pkgs/common"
 )
 
-func GetDataFromGit(env, appName, profileName string) (interface{}, error) {
+func GetDataFromGit(env, appName, profileName string) (any, error) {
 	r := git.GitRepo
 
 	dirExists, err := common.DirExists(r.LocalPath)

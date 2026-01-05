@@ -133,13 +133,13 @@ func initFileList(localPath, env, appName, profileName string) []string {
 	return res
 }
 
-func (r *Repo) GetCfgByAppName(envName, appName, profileName string) (interface{}, error) {
+func (r *Repo) GetCfgByAppName(envName, appName, profileName string) (any, error) {
 	var (
-		data, res map[string]interface{}
+		data, res map[string]any
 		err       error
 	)
 
-	res = make(map[string]interface{})
+	res = make(map[string]any)
 
 	if envName == "" {
 		envName = r.SearchPath
