@@ -6,9 +6,3 @@ type JSONResult struct {
 	Message string      `json:"message,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 }
-
-type (
-	Health struct {
-		Status string
-	}
-)

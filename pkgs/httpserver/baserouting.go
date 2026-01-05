@@ -1,32 +1,34 @@
-package baserouting
+package httpserver
 
 import (
-	"github.com/padremortius/cfg-server/internal/config"
-	"github.com/padremortius/cfg-server/internal/controller/structs"
-
 	fiber "github.com/gofiber/fiber/v2"
 )
 
 type (
 	BaseRoutes struct {
-		cfg config.Config
+		cfg     any
+		version any
+	}
+
+	Health struct {
+		Status string
 	}
 )
 
 func (b *BaseRoutes) getHealth(c *fiber.Ctx) error {
-	return c.JSON(structs.Health{Status: "up"})
+	return c.JSON(Health{Status: "up"})
 }
 
 func (b *BaseRoutes) getInfo(c *fiber.Ctx) error {
-	return c.JSON(b.cfg.Version)
+	return c.JSON(b.version)
 }
 
 func (b *BaseRoutes) getEnv(c *fiber.Ctx) error {
 	return c.JSON(b.cfg)
 }
 
-func InitBaseRouter(app *fiber.App, aConfig config.Config) {
-	bRoutes := BaseRoutes{cfg: aConfig}
+func InitBaseRouter(app *fiber.App, aConfig any, aVersion any) {
+	bRoutes := BaseRoutes{cfg: aConfig, version: aVersion}
 
 	// K8s probe
 	app.Get("/health", bRoutes.getHealth)

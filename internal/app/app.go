@@ -8,7 +8,6 @@ import (
 	"syscall"
 
 	"github.com/padremortius/cfg-server/internal/config"
-	"github.com/padremortius/cfg-server/internal/controller/baserouting"
 	v1 "github.com/padremortius/cfg-server/internal/controller/v1"
 	"github.com/padremortius/cfg-server/internal/git"
 	"github.com/padremortius/cfg-server/pkgs/httpserver"
@@ -79,7 +78,7 @@ func Run(ver config.Version) {
 	log.Logger.Info().Msgf("Start web-server on port %v", appCfg.HTTP.Port)
 
 	httpServer := httpserver.New(ctx, log, &appCfg.HTTP)
-	baserouting.InitBaseRouter(httpServer.Handler, *appCfg)
+	httpserver.InitBaseRouter(httpServer.Handler, *appCfg, appCfg.Version)
 	v1.InitAppRouter(httpServer.Handler)
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
