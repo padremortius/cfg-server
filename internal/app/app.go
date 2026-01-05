@@ -20,19 +20,17 @@ var (
 	searchPath = flag.String("searchPath", "", "Git search path")
 )
 
-func Run(ver config.Version) {
+func Run(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash string) {
 	flag.Parse()
 	ctxmain := context.Background()
 
 	log := svclogger.New("")
 
-	appCfg, err := config.NewConfig()
+	appCfg, err := config.NewConfig(aBuildNumber, aBuildTimeStamp, aGitBranch, aGitHash)
 	if err != nil {
 		log.Logger.Error().Msgf("Config error: %v", err)
 		os.Exit(-1)
 	}
-
-	appCfg.Version = ver
 
 	if *repoUrl != "" {
 		appCfg.Git.RepoUrl = *repoUrl
@@ -54,7 +52,7 @@ func Run(ver config.Version) {
 		appCfg.Git.Depth = 5
 	}
 
-	log.Logger.Info().Msgf("Start application. Version: %v", appCfg.Version.Version)
+	log.Logger.Info().Msgf("Start application. Version: %v", appCfg.Version.BuildVersion)
 
 	ctx, cancel := context.WithTimeout(ctxmain, appCfg.HTTP.Timeouts.Shutdown)
 	defer cancel()

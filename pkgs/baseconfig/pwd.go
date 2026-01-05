@@ -1,19 +1,17 @@
-package config
+package baseconfig
 
 import (
-	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/padremortius/cfg-server/pkgs/common"
 )
 
-type pwdData map[string]string
-
-func fillPwdMap(path string) (pwdData, error) {
-	pwd := make(pwdData, 0)
+func FillPwdMap(path string) (map[string]string, error) {
+	pwd := make(map[string]string, 0)
 	if len(path) < 1 {
-		return pwd, errors.New("SEC_PATH is empty")
+		return pwd, fmt.Errorf("path to file with secrets is empty")
 	}
 
 	entries, err := os.ReadDir(path)
@@ -24,7 +22,7 @@ func fillPwdMap(path string) (pwdData, error) {
 	for _, entry := range entries {
 		buff, err := common.ReadFile(filepath.Join(path, entry.Name()))
 		if err != nil {
-			return pwd, errors.New("Error read file: " + entry.Name() + " Error: " + err.Error())
+			return pwd, fmt.Errorf("Error read file: %v. Error: %v", entry.Name(), err.Error())
 		}
 		pwd[entry.Name()] = string(buff)
 	}
