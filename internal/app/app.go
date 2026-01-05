@@ -11,7 +11,7 @@ import (
 	"github.com/padremortius/cfg-server/internal/controller/baserouting"
 	v1 "github.com/padremortius/cfg-server/internal/controller/v1"
 	"github.com/padremortius/cfg-server/internal/git"
-	"github.com/padremortius/cfg-server/internal/httpserver"
+	"github.com/padremortius/cfg-server/pkgs/httpserver"
 	"github.com/padremortius/cfg-server/pkgs/svclogger"
 )
 

@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/padremortius/cfg-server/internal/git"
-	"github.com/padremortius/cfg-server/internal/httpserver"
+	"github.com/padremortius/cfg-server/pkgs/httpserver"
 	"github.com/padremortius/cfg-server/pkgs/svclogger"
 
 	"github.com/go-playground/validator/v10"
