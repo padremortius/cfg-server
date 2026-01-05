@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/padremortius/cfg-server/internal/common"
 	"github.com/padremortius/cfg-server/internal/controller/structs"
 	"github.com/padremortius/cfg-server/internal/usecase/gitdata"
+	"github.com/padremortius/cfg-server/pkgs/common"
 
 	"github.com/gofiber/fiber/v2"
 )

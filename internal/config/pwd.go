@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/padremortius/cfg-server/internal/common"
+	"github.com/padremortius/cfg-server/pkgs/common"
 )
 
 type pwdData map[string]string
