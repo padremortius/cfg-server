@@ -1,10 +1,11 @@
 package httpserver
 
 import (
-	"cfg-server/internal/svclogger"
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/padremortius/cfg-server/internal/svclogger"
 
 	fiberprom "github.com/carousell/fiber-prometheus-middleware"
 	gojson "github.com/goccy/go-json"

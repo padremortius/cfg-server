@@ -1,17 +1,18 @@
 package app
 
 import (
-	"cfg-server/internal/config"
-	"cfg-server/internal/controller/baserouting"
-	v1 "cfg-server/internal/controller/v1"
-	"cfg-server/internal/git"
-	"cfg-server/internal/httpserver"
-	"cfg-server/internal/svclogger"
 	"context"
 	"flag"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/padremortius/cfg-server/internal/config"
+	"github.com/padremortius/cfg-server/internal/controller/baserouting"
+	v1 "github.com/padremortius/cfg-server/internal/controller/v1"
+	"github.com/padremortius/cfg-server/internal/git"
+	"github.com/padremortius/cfg-server/internal/httpserver"
+	"github.com/padremortius/cfg-server/internal/svclogger"
 )
 
 var (

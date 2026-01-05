@@ -1,12 +1,13 @@
 package git
 
 import (
-	"cfg-server/internal/svclogger"
 	"errors"
 	"fmt"
 	"os"
 	"slices"
 	"time"
+
+	"github.com/padremortius/cfg-server/internal/svclogger"
 
 	"dario.cat/mergo"
 	gogit "github.com/go-git/go-git/v5"

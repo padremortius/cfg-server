@@ -1,8 +1,8 @@
 package baserouting
 
 import (
-	"cfg-server/internal/config"
-	"cfg-server/internal/controller/structs"
+	"github.com/padremortius/cfg-server/internal/config"
+	"github.com/padremortius/cfg-server/internal/controller/structs"
 
 	fiber "github.com/gofiber/fiber/v2"
 )

@@ -1,11 +1,12 @@
 package v1
 
 import (
-	"cfg-server/internal/common"
-	"cfg-server/internal/controller/structs"
-	"cfg-server/internal/usecase/gitdata"
 	"net/http"
 	"strings"
+
+	"github.com/padremortius/cfg-server/internal/common"
+	"github.com/padremortius/cfg-server/internal/controller/structs"
+	"github.com/padremortius/cfg-server/internal/usecase/gitdata"
 
 	"github.com/gofiber/fiber/v2"
 )

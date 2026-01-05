@@ -1,4 +1,4 @@
-module cfg-server
+module github.com/padremortius/cfg-server
 
 go 1.24.0
 

@@ -1,12 +1,13 @@
 package config
 
 import (
-	"cfg-server/internal/git"
-	"cfg-server/internal/httpserver"
-	"cfg-server/internal/svclogger"
 	"errors"
 	"fmt"
 	"os"
+
+	"github.com/padremortius/cfg-server/internal/git"
+	"github.com/padremortius/cfg-server/internal/httpserver"
+	"github.com/padremortius/cfg-server/internal/svclogger"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/ilyakaznacheev/cleanenv"

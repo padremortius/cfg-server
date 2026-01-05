@@ -1,10 +1,11 @@
 package config
 
 import (
-	"cfg-server/internal/common"
 	"errors"
 	"os"
 	"path/filepath"
+
+	"github.com/padremortius/cfg-server/internal/common"
 )
 
 type pwdData map[string]string

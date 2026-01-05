@@ -1,8 +1,9 @@
 package gitdata
 
 import (
-	"cfg-server/internal/git"
 	"errors"
+
+	"github.com/padremortius/cfg-server/internal/git"
 )
 
 func GetDataFromGit(env, appName, profileName string) (interface{}, error) {

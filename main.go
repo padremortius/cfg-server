@@ -1,8 +1,8 @@
 package main
 
 import (
-	"cfg-server/internal/app"
-	"cfg-server/internal/config"
+	"github.com/padremortius/cfg-server/internal/app"
+	"github.com/padremortius/cfg-server/internal/config"
 )
 
 var (
