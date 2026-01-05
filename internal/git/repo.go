@@ -7,7 +7,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/padremortius/cfg-server/internal/svclogger"
+	"github.com/padremortius/cfg-server/pkgs/svclogger"
 
 	"dario.cat/mergo"
 	gogit "github.com/go-git/go-git/v5"

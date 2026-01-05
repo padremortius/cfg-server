@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/padremortius/cfg-server/internal/svclogger"
+	"github.com/padremortius/cfg-server/pkgs/svclogger"
 
 	fiberprom "github.com/carousell/fiber-prometheus-middleware"
 	gojson "github.com/goccy/go-json"
