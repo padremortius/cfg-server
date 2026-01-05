@@ -3,8 +3,8 @@ package gitdata
 import (
 	"fmt"
 
-	"github.com/padremortius/cfg-server/internal/git"
 	"github.com/padremortius/cfg-server/pkgs/common"
+	"github.com/padremortius/cfg-server/pkgs/git"
 )
 
 func GetDataFromGit(env, appName, profileName string) (any, error) {

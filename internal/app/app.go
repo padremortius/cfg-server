@@ -9,8 +9,8 @@ import (
 
 	"github.com/padremortius/cfg-server/internal/config"
 	v1 "github.com/padremortius/cfg-server/internal/controller/v1"
-	"github.com/padremortius/cfg-server/internal/git"
 	"github.com/padremortius/cfg-server/pkgs/common"
+	"github.com/padremortius/cfg-server/pkgs/git"
 	"github.com/padremortius/cfg-server/pkgs/httpserver"
 	"github.com/padremortius/cfg-server/pkgs/svclogger"
 )

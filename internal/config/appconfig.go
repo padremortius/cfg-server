@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/ilyakaznacheev/cleanenv"
-	"github.com/padremortius/cfg-server/internal/git"
 	"github.com/padremortius/cfg-server/pkgs/baseconfig"
+	"github.com/padremortius/cfg-server/pkgs/git"
 	"github.com/padremortius/cfg-server/pkgs/httpserver"
 	"github.com/padremortius/cfg-server/pkgs/svclogger"
 )
