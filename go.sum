@@ -65,8 +65,8 @@ github.com/gofiber/adaptor/v2 v2.2.1 h1:givE7iViQWlsTR4Jh7tB4iXzrlKBgiraB/yTdHs9
 github.com/gofiber/adaptor/v2 v2.2.1/go.mod h1:AhR16dEqs25W2FY/l8gSj1b51Azg5dtPDmm+pruNOrc=
 github.com/gofiber/contrib/fiberzerolog v1.0.3 h1:Z97hA5bNfThtZjEYG12g9YcT8I/cmCikNgmE4uzFk0U=
 github.com/gofiber/contrib/fiberzerolog v1.0.3/go.mod h1:0MD+NNFy0nZwiSo4dSVW7WwWVzOyuATNXwhJwgOP8uM=
-github.com/gofiber/fiber/v2 v2.52.10 h1:jRHROi2BuNti6NYXmZ6gbNSfT3zj/8c0xy94GOU5elY=
-github.com/gofiber/fiber/v2 v2.52.10/go.mod h1:YEcBbO/FB+5M1IZNBP9FO3J9281zgPAreiI1oqg8nDw=
+github.com/gofiber/fiber/v2 v2.52.11 h1:5f4yzKLcBcF8ha1GQTWB+mpblWz3Vz6nSAbTL31HkWs=
+github.com/gofiber/fiber/v2 v2.52.11/go.mod h1:YEcBbO/FB+5M1IZNBP9FO3J9281zgPAreiI1oqg8nDw=
 github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 h1:f+oWsMOmNPc8JmEHVZIycC7hBoQxHH9pNKQORJNozsQ=
 github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8/go.mod h1:wcDNUvekVysuuOpQKo3191zZyTpiI6se1N1ULghS0sw=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
