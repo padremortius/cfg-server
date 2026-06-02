@@ -6,7 +6,7 @@ require (
 	dario.cat/mergo v1.0.2
 	github.com/BurntSushi/toml v1.6.0
 	github.com/carousell/fiber-prometheus-middleware v1.0.1
-	github.com/go-git/go-git/v5 v5.18.0
+	github.com/go-git/go-git/v5 v5.19.1
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/goccy/go-json v0.10.5
 	github.com/goccy/go-yaml v1.19.1
@@ -46,7 +46,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.19 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/pjbgf/sha1cd v0.5.0 // indirect
+	github.com/pjbgf/sha1cd v0.6.0 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.67.4 // indirect
